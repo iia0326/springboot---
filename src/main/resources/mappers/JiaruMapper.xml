@@ -1,0 +1,401 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.kangyi.mapper.JiaruMapper">
+  <resultMap id="BaseResultMap" type="com.kangyi.pojo.Jiaru">
+    <id column="jiaru_id" jdbcType="BIGINT" property="jiaruId" />
+    <result column="order_id" jdbcType="BIGINT" property="orderId" />
+    <result column="from_user_id" jdbcType="BIGINT" property="fromUserId" />
+    <result column="to_user_id" jdbcType="BIGINT" property="toUserId" />
+    <result column="permission" jdbcType="VARCHAR" property="permission" />
+    <result column="type" jdbcType="VARCHAR" property="type" />
+    <result column="type_id" jdbcType="BIGINT" property="typeId" />
+    <result column="admin_remark" jdbcType="VARCHAR" property="adminRemark" />
+    <result column="user_remark" jdbcType="VARCHAR" property="userRemark" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="handle_time" jdbcType="TIMESTAMP" property="handleTime" />
+    <result column="status" jdbcType="VARCHAR" property="status" />
+    <result column="jiaru" jdbcType="TINYINT" property="jiaru" />
+    <result column="remark" jdbcType="VARCHAR" property="remark" />
+    <result column="type_name" jdbcType="VARCHAR" property="typeName" />
+    <result column="parent_read" jdbcType="VARCHAR" property="parentRead" />
+    <result column="message_type" jdbcType="TINYINT" property="messageType" />
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    jiaru_id, order_id, from_user_id, to_user_id, permission, type, type_id, admin_remark, 
+    user_remark, create_time, handle_time, status, jiaru, remark, type_name, parent_read, 
+    message_type
+  </sql>
+  <select id="selectByExample" parameterType="com.kangyi.pojo.JiaruExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from t_order_user_jiaru
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from t_order_user_jiaru
+    where jiaru_id = #{jiaruId,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from t_order_user_jiaru
+    where jiaru_id = #{jiaruId,jdbcType=BIGINT}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.kangyi.pojo.JiaruExample">
+    delete from t_order_user_jiaru
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.kangyi.pojo.Jiaru">
+    replace into t_order_user_jiaru (jiaru_id, order_id, from_user_id,
+      to_user_id, permission, type, 
+      type_id, admin_remark, user_remark, 
+      create_time, handle_time, status, 
+      jiaru, remark, type_name, 
+      parent_read, message_type)
+    values (#{jiaruId,jdbcType=BIGINT}, #{orderId,jdbcType=BIGINT}, #{fromUserId,jdbcType=BIGINT}, 
+      #{toUserId,jdbcType=BIGINT}, #{permission,jdbcType=VARCHAR}, #{type,jdbcType=VARCHAR}, 
+      #{typeId,jdbcType=BIGINT}, #{adminRemark,jdbcType=VARCHAR}, #{userRemark,jdbcType=VARCHAR}, 
+      #{createTime,jdbcType=TIMESTAMP}, #{handleTime,jdbcType=TIMESTAMP}, #{status,jdbcType=VARCHAR}, 
+      #{jiaru,jdbcType=TINYINT}, #{remark,jdbcType=VARCHAR}, #{typeName,jdbcType=VARCHAR}, 
+      #{parentRead,jdbcType=VARCHAR}, #{messageType,jdbcType=TINYINT})
+  </insert>
+  <insert id="insertSelective" parameterType="com.kangyi.pojo.Jiaru">
+    insert into t_order_user_jiaru
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="jiaruId != null">
+        jiaru_id,
+      </if>
+      <if test="orderId != null">
+        order_id,
+      </if>
+      <if test="fromUserId != null">
+        from_user_id,
+      </if>
+      <if test="toUserId != null">
+        to_user_id,
+      </if>
+      <if test="permission != null">
+        permission,
+      </if>
+      <if test="type != null">
+        type,
+      </if>
+      <if test="typeId != null">
+        type_id,
+      </if>
+      <if test="adminRemark != null">
+        admin_remark,
+      </if>
+      <if test="userRemark != null">
+        user_remark,
+      </if>
+      <if test="createTime != null">
+        create_time,
+      </if>
+      <if test="handleTime != null">
+        handle_time,
+      </if>
+      <if test="status != null">
+        status,
+      </if>
+      <if test="jiaru != null">
+        jiaru,
+      </if>
+      <if test="remark != null">
+        remark,
+      </if>
+      <if test="typeName != null">
+        type_name,
+      </if>
+      <if test="parentRead != null">
+        parent_read,
+      </if>
+      <if test="messageType != null">
+        message_type,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="jiaruId != null">
+        #{jiaruId,jdbcType=BIGINT},
+      </if>
+      <if test="orderId != null">
+        #{orderId,jdbcType=BIGINT},
+      </if>
+      <if test="fromUserId != null">
+        #{fromUserId,jdbcType=BIGINT},
+      </if>
+      <if test="toUserId != null">
+        #{toUserId,jdbcType=BIGINT},
+      </if>
+      <if test="permission != null">
+        #{permission,jdbcType=VARCHAR},
+      </if>
+      <if test="type != null">
+        #{type,jdbcType=VARCHAR},
+      </if>
+      <if test="typeId != null">
+        #{typeId,jdbcType=BIGINT},
+      </if>
+      <if test="adminRemark != null">
+        #{adminRemark,jdbcType=VARCHAR},
+      </if>
+      <if test="userRemark != null">
+        #{userRemark,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null">
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="handleTime != null">
+        #{handleTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="status != null">
+        #{status,jdbcType=VARCHAR},
+      </if>
+      <if test="jiaru != null">
+        #{jiaru,jdbcType=TINYINT},
+      </if>
+      <if test="remark != null">
+        #{remark,jdbcType=VARCHAR},
+      </if>
+      <if test="typeName != null">
+        #{typeName,jdbcType=VARCHAR},
+      </if>
+      <if test="parentRead != null">
+        #{parentRead,jdbcType=VARCHAR},
+      </if>
+      <if test="messageType != null">
+        #{messageType,jdbcType=TINYINT},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.kangyi.pojo.JiaruExample" resultType="java.lang.Long">
+    select count(*) from t_order_user_jiaru
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map">
+    update t_order_user_jiaru
+    <set>
+      <if test="record.jiaruId != null">
+        jiaru_id = #{record.jiaruId,jdbcType=BIGINT},
+      </if>
+      <if test="record.orderId != null">
+        order_id = #{record.orderId,jdbcType=BIGINT},
+      </if>
+      <if test="record.fromUserId != null">
+        from_user_id = #{record.fromUserId,jdbcType=BIGINT},
+      </if>
+      <if test="record.toUserId != null">
+        to_user_id = #{record.toUserId,jdbcType=BIGINT},
+      </if>
+      <if test="record.permission != null">
+        permission = #{record.permission,jdbcType=VARCHAR},
+      </if>
+      <if test="record.type != null">
+        type = #{record.type,jdbcType=VARCHAR},
+      </if>
+      <if test="record.typeId != null">
+        type_id = #{record.typeId,jdbcType=BIGINT},
+      </if>
+      <if test="record.adminRemark != null">
+        admin_remark = #{record.adminRemark,jdbcType=VARCHAR},
+      </if>
+      <if test="record.userRemark != null">
+        user_remark = #{record.userRemark,jdbcType=VARCHAR},
+      </if>
+      <if test="record.createTime != null">
+        create_time = #{record.createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.handleTime != null">
+        handle_time = #{record.handleTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.status != null">
+        status = #{record.status,jdbcType=VARCHAR},
+      </if>
+      <if test="record.jiaru != null">
+        jiaru = #{record.jiaru,jdbcType=TINYINT},
+      </if>
+      <if test="record.remark != null">
+        remark = #{record.remark,jdbcType=VARCHAR},
+      </if>
+      <if test="record.typeName != null">
+        type_name = #{record.typeName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.parentRead != null">
+        parent_read = #{record.parentRead,jdbcType=VARCHAR},
+      </if>
+      <if test="record.messageType != null">
+        message_type = #{record.messageType,jdbcType=TINYINT},
+      </if>
+    </set>
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map">
+    update t_order_user_jiaru
+    set jiaru_id = #{record.jiaruId,jdbcType=BIGINT},
+      order_id = #{record.orderId,jdbcType=BIGINT},
+      from_user_id = #{record.fromUserId,jdbcType=BIGINT},
+      to_user_id = #{record.toUserId,jdbcType=BIGINT},
+      permission = #{record.permission,jdbcType=VARCHAR},
+      type = #{record.type,jdbcType=VARCHAR},
+      type_id = #{record.typeId,jdbcType=BIGINT},
+      admin_remark = #{record.adminRemark,jdbcType=VARCHAR},
+      user_remark = #{record.userRemark,jdbcType=VARCHAR},
+      create_time = #{record.createTime,jdbcType=TIMESTAMP},
+      handle_time = #{record.handleTime,jdbcType=TIMESTAMP},
+      status = #{record.status,jdbcType=VARCHAR},
+      jiaru = #{record.jiaru,jdbcType=TINYINT},
+      remark = #{record.remark,jdbcType=VARCHAR},
+      type_name = #{record.typeName,jdbcType=VARCHAR},
+      parent_read = #{record.parentRead,jdbcType=VARCHAR},
+      message_type = #{record.messageType,jdbcType=TINYINT}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.kangyi.pojo.Jiaru">
+    update t_order_user_jiaru
+    <set>
+      <if test="orderId != null">
+        order_id = #{orderId,jdbcType=BIGINT},
+      </if>
+      <if test="fromUserId != null">
+        from_user_id = #{fromUserId,jdbcType=BIGINT},
+      </if>
+      <if test="toUserId != null">
+        to_user_id = #{toUserId,jdbcType=BIGINT},
+      </if>
+      <if test="permission != null">
+        permission = #{permission,jdbcType=VARCHAR},
+      </if>
+      <if test="type != null">
+        type = #{type,jdbcType=VARCHAR},
+      </if>
+      <if test="typeId != null">
+        type_id = #{typeId,jdbcType=BIGINT},
+      </if>
+      <if test="adminRemark != null">
+        admin_remark = #{adminRemark,jdbcType=VARCHAR},
+      </if>
+      <if test="userRemark != null">
+        user_remark = #{userRemark,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null">
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="handleTime != null">
+        handle_time = #{handleTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="status != null">
+        status = #{status,jdbcType=VARCHAR},
+      </if>
+      <if test="jiaru != null">
+        jiaru = #{jiaru,jdbcType=TINYINT},
+      </if>
+      <if test="remark != null">
+        remark = #{remark,jdbcType=VARCHAR},
+      </if>
+      <if test="typeName != null">
+        type_name = #{typeName,jdbcType=VARCHAR},
+      </if>
+      <if test="parentRead != null">
+        parent_read = #{parentRead,jdbcType=VARCHAR},
+      </if>
+      <if test="messageType != null">
+        message_type = #{messageType,jdbcType=TINYINT},
+      </if>
+    </set>
+    where jiaru_id = #{jiaruId,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.kangyi.pojo.Jiaru">
+    update t_order_user_jiaru
+    set order_id = #{orderId,jdbcType=BIGINT},
+      from_user_id = #{fromUserId,jdbcType=BIGINT},
+      to_user_id = #{toUserId,jdbcType=BIGINT},
+      permission = #{permission,jdbcType=VARCHAR},
+      type = #{type,jdbcType=VARCHAR},
+      type_id = #{typeId,jdbcType=BIGINT},
+      admin_remark = #{adminRemark,jdbcType=VARCHAR},
+      user_remark = #{userRemark,jdbcType=VARCHAR},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      handle_time = #{handleTime,jdbcType=TIMESTAMP},
+      status = #{status,jdbcType=VARCHAR},
+      jiaru = #{jiaru,jdbcType=TINYINT},
+      remark = #{remark,jdbcType=VARCHAR},
+      type_name = #{typeName,jdbcType=VARCHAR},
+      parent_read = #{parentRead,jdbcType=VARCHAR},
+      message_type = #{messageType,jdbcType=TINYINT}
+    where jiaru_id = #{jiaruId,jdbcType=BIGINT}
+  </update>
+</mapper>

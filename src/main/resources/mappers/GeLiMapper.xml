@@ -1,0 +1,368 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.kangyi.mapper.GeLiMapper">
+  <resultMap id="BaseResultMap" type="com.kangyi.pojo.GeLi">
+    <id column="geli_id" jdbcType="BIGINT" property="geliId" />
+    <result column="jindu" jdbcType="DECIMAL" property="jindu" />
+    <result column="weidu" jdbcType="DECIMAL" property="weidu" />
+    <result column="gelidian_name" jdbcType="VARCHAR" property="gelidianName" />
+    <result column="gelidian_position" jdbcType="VARCHAR" property="gelidianPosition" />
+    <result column="grlirenshu" jdbcType="INTEGER" property="grlirenshu" />
+    <result column="contact" jdbcType="VARCHAR" property="contact" />
+    <result column="geli_org" jdbcType="VARCHAR" property="geliOrg" />
+    <result column="area" jdbcType="VARCHAR" property="area" />
+    <result column="user_id" jdbcType="BIGINT" property="userId" />
+    <result column="order_id" jdbcType="BIGINT" property="orderId" />
+    <result column="enddate" jdbcType="TIMESTAMP" property="enddate" />
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    geli_id, jindu, weidu, gelidian_name, gelidian_position, grlirenshu, contact, geli_org, 
+    area, user_id, order_id, enddate
+  </sql>
+
+  <select id="selectByExample" parameterType="com.kangyi.pojo.GeLiExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from t_geli
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+
+
+  <select id="selectByOrderStatusAndExample" parameterType="com.kangyi.pojo.GeLiExample" resultMap="BaseResultMap">
+    select   geli_id, jindu, weidu, gelidian_name, gelidian_position, grlirenshu, contact, geli_org,
+    area, g.user_id, g.order_id, enddate
+
+    <if test="distinct">
+      distinct
+    </if>
+
+    from t_geli g join t_order o on o.order_id = g.order_id and o.status=2
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+
+
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from t_geli
+    where geli_id = #{geliId,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from t_geli
+    where geli_id = #{geliId,jdbcType=BIGINT}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.kangyi.pojo.GeLiExample">
+    delete from t_geli
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.kangyi.pojo.GeLi">
+    insert into t_geli (geli_id, jindu, weidu, 
+      gelidian_name, gelidian_position, grlirenshu, 
+      contact, geli_org, area, 
+      user_id, order_id, enddate
+      )
+    values (#{geliId,jdbcType=BIGINT}, #{jindu,jdbcType=DECIMAL}, #{weidu,jdbcType=DECIMAL}, 
+      #{gelidianName,jdbcType=VARCHAR}, #{gelidianPosition,jdbcType=VARCHAR}, #{grlirenshu,jdbcType=INTEGER}, 
+      #{contact,jdbcType=VARCHAR}, #{geliOrg,jdbcType=VARCHAR}, #{area,jdbcType=VARCHAR}, 
+      #{userId,jdbcType=BIGINT}, #{orderId,jdbcType=BIGINT}, #{enddate,jdbcType=TIMESTAMP}
+      )
+  </insert>
+
+
+
+  <insert id="insertAndGetId" parameterType="com.kangyi.pojo.GeLi">
+
+    <selectKey resultType="java.lang.Long" order="AFTER" keyProperty="geliId">
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+
+
+    insert into t_geli (geli_id, jindu, weidu,
+      gelidian_name, gelidian_position, grlirenshu,
+      contact, geli_org, area,
+      user_id, order_id, enddate
+      )
+    values (#{geliId,jdbcType=BIGINT}, #{jindu,jdbcType=DECIMAL}, #{weidu,jdbcType=DECIMAL},
+      #{gelidianName,jdbcType=VARCHAR}, #{gelidianPosition,jdbcType=VARCHAR}, #{grlirenshu,jdbcType=INTEGER},
+      #{contact,jdbcType=VARCHAR}, #{geliOrg,jdbcType=VARCHAR}, #{area,jdbcType=VARCHAR},
+      #{userId,jdbcType=BIGINT}, #{orderId,jdbcType=BIGINT}, #{enddate,jdbcType=TIMESTAMP}
+      )
+  </insert>
+
+
+
+  <insert id="insertSelective" parameterType="com.kangyi.pojo.GeLi">
+    insert into t_geli
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="geliId != null">
+        geli_id,
+      </if>
+      <if test="jindu != null">
+        jindu,
+      </if>
+      <if test="weidu != null">
+        weidu,
+      </if>
+      <if test="gelidianName != null">
+        gelidian_name,
+      </if>
+      <if test="gelidianPosition != null">
+        gelidian_position,
+      </if>
+      <if test="grlirenshu != null">
+        grlirenshu,
+      </if>
+      <if test="contact != null">
+        contact,
+      </if>
+      <if test="geliOrg != null">
+        geli_org,
+      </if>
+      <if test="area != null">
+        area,
+      </if>
+      <if test="userId != null">
+        user_id,
+      </if>
+      <if test="orderId != null">
+        order_id,
+      </if>
+      <if test="enddate != null">
+        enddate,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="geliId != null">
+        #{geliId,jdbcType=BIGINT},
+      </if>
+      <if test="jindu != null">
+        #{jindu,jdbcType=DECIMAL},
+      </if>
+      <if test="weidu != null">
+        #{weidu,jdbcType=DECIMAL},
+      </if>
+      <if test="gelidianName != null">
+        #{gelidianName,jdbcType=VARCHAR},
+      </if>
+      <if test="gelidianPosition != null">
+        #{gelidianPosition,jdbcType=VARCHAR},
+      </if>
+      <if test="grlirenshu != null">
+        #{grlirenshu,jdbcType=INTEGER},
+      </if>
+      <if test="contact != null">
+        #{contact,jdbcType=VARCHAR},
+      </if>
+      <if test="geliOrg != null">
+        #{geliOrg,jdbcType=VARCHAR},
+      </if>
+      <if test="area != null">
+        #{area,jdbcType=VARCHAR},
+      </if>
+      <if test="userId != null">
+        #{userId,jdbcType=BIGINT},
+      </if>
+      <if test="orderId != null">
+        #{orderId,jdbcType=BIGINT},
+      </if>
+      <if test="enddate != null">
+        #{enddate,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.kangyi.pojo.GeLiExample" resultType="java.lang.Long">
+    select count(*) from t_geli
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map">
+    update t_geli
+    <set>
+      <if test="record.geliId != null">
+        geli_id = #{record.geliId,jdbcType=BIGINT},
+      </if>
+      <if test="record.jindu != null">
+        jindu = #{record.jindu,jdbcType=DECIMAL},
+      </if>
+      <if test="record.weidu != null">
+        weidu = #{record.weidu,jdbcType=DECIMAL},
+      </if>
+      <if test="record.gelidianName != null">
+        gelidian_name = #{record.gelidianName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.gelidianPosition != null">
+        gelidian_position = #{record.gelidianPosition,jdbcType=VARCHAR},
+      </if>
+      <if test="record.grlirenshu != null">
+        grlirenshu = #{record.grlirenshu,jdbcType=INTEGER},
+      </if>
+      <if test="record.contact != null">
+        contact = #{record.contact,jdbcType=VARCHAR},
+      </if>
+      <if test="record.geliOrg != null">
+        geli_org = #{record.geliOrg,jdbcType=VARCHAR},
+      </if>
+      <if test="record.area != null">
+        area = #{record.area,jdbcType=VARCHAR},
+      </if>
+      <if test="record.userId != null">
+        user_id = #{record.userId,jdbcType=BIGINT},
+      </if>
+      <if test="record.orderId != null">
+        order_id = #{record.orderId,jdbcType=BIGINT},
+      </if>
+      <if test="record.enddate != null">
+        enddate = #{record.enddate,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map">
+    update t_geli
+    set geli_id = #{record.geliId,jdbcType=BIGINT},
+      jindu = #{record.jindu,jdbcType=DECIMAL},
+      weidu = #{record.weidu,jdbcType=DECIMAL},
+      gelidian_name = #{record.gelidianName,jdbcType=VARCHAR},
+      gelidian_position = #{record.gelidianPosition,jdbcType=VARCHAR},
+      grlirenshu = #{record.grlirenshu,jdbcType=INTEGER},
+      contact = #{record.contact,jdbcType=VARCHAR},
+      geli_org = #{record.geliOrg,jdbcType=VARCHAR},
+      area = #{record.area,jdbcType=VARCHAR},
+      user_id = #{record.userId,jdbcType=BIGINT},
+      order_id = #{record.orderId,jdbcType=BIGINT},
+      enddate = #{record.enddate,jdbcType=TIMESTAMP}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.kangyi.pojo.GeLi">
+    update t_geli
+    <set>
+      <if test="jindu != null">
+        jindu = #{jindu,jdbcType=DECIMAL},
+      </if>
+      <if test="weidu != null">
+        weidu = #{weidu,jdbcType=DECIMAL},
+      </if>
+      <if test="gelidianName != null">
+        gelidian_name = #{gelidianName,jdbcType=VARCHAR},
+      </if>
+      <if test="gelidianPosition != null">
+        gelidian_position = #{gelidianPosition,jdbcType=VARCHAR},
+      </if>
+      <if test="grlirenshu != null">
+        grlirenshu = #{grlirenshu,jdbcType=INTEGER},
+      </if>
+      <if test="contact != null">
+        contact = #{contact,jdbcType=VARCHAR},
+      </if>
+      <if test="geliOrg != null">
+        geli_org = #{geliOrg,jdbcType=VARCHAR},
+      </if>
+      <if test="area != null">
+        area = #{area,jdbcType=VARCHAR},
+      </if>
+      <if test="userId != null">
+        user_id = #{userId,jdbcType=BIGINT},
+      </if>
+      <if test="orderId != null">
+        order_id = #{orderId,jdbcType=BIGINT},
+      </if>
+      <if test="enddate != null">
+        enddate = #{enddate,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where geli_id = #{geliId,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.kangyi.pojo.GeLi">
+    update t_geli
+    set jindu = #{jindu,jdbcType=DECIMAL},
+      weidu = #{weidu,jdbcType=DECIMAL},
+      gelidian_name = #{gelidianName,jdbcType=VARCHAR},
+      gelidian_position = #{gelidianPosition,jdbcType=VARCHAR},
+      grlirenshu = #{grlirenshu,jdbcType=INTEGER},
+      contact = #{contact,jdbcType=VARCHAR},
+      geli_org = #{geliOrg,jdbcType=VARCHAR},
+      area = #{area,jdbcType=VARCHAR},
+      user_id = #{userId,jdbcType=BIGINT},
+      order_id = #{orderId,jdbcType=BIGINT},
+      enddate = #{enddate,jdbcType=TIMESTAMP}
+    where geli_id = #{geliId,jdbcType=BIGINT}
+  </update>
+</mapper>

@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE generatorConfiguration PUBLIC "-//mybatis.org//DTD MyBatis Generator Configuration 1.0//EN" "http://mybatis.org/dtd/mybatis-generator-config_1_0.dtd">
+<generatorConfiguration>
+    <context id="DB2Tables" targetRuntime="MyBatis3">
+
+        <!--        配置mapper.xml防止追加写入文件-->
+        <plugin type="org.mybatis.generator.plugins.UnmergeableXmlMappersPlugin" />
+        <!--        新增实体类的toString函数的生成器-->
+        <plugin type="org.mybatis.generator.plugins.ToStringPlugin" />
+
+        <commentGenerator>
+            <!-- 是否去除自动生成的注释 -->
+            <property name="suppressAllComments" value="true"/>
+        </commentGenerator>
+        <!-- Mysql数据库连接的信息：驱动类、连接地址、用户名、密码 -->
+        <jdbcConnection driverClass="com.mysql.cj.jdbc.Driver"
+                        connectionURL="jdbc:mysql://localhost:3306/kanyi"
+                        userId="root"
+                        password="123456789">
+            <!--设置可以获取tables remarks信息-->
+            <property name="useInformationSchema" value="true"/>
+            <!--设置可以获取remarks信息-->
+            <property name="remarks" value="true"/>
+        </jdbcConnection>
+
+        <javaTypeResolver >
+            <property name="forceBigDecimals" value="false" />
+        </javaTypeResolver>
+
+        <!-- targetProject：生成POJO类的位置 -->
+        <javaModelGenerator targetPackage="com.kangyi.pojo" targetProject=".\src\main\java">
+            <!-- enableSubPackages:是否让schema作为包的后缀 -->
+            <property name="enableSubPackages" value="false" />
+            <!-- 从数据库返回的值被清理前后的空格 -->
+            <property name="trimStrings" value="true" />
+        </javaModelGenerator>
+
+        <!-- targetProject：mapper映射文件生成的位置 -->
+        <sqlMapGenerator targetPackage="mappers"  targetProject=".\src\main\resources">
+            <!-- enableSubPackages:是否让schema作为包的后缀 -->
+            <property name="enableSubPackages" value="false" />
+        </sqlMapGenerator>
+
+        <!-- targetProject：mapper接口生成的的位置 -->
+        <javaClientGenerator type="XMLMAPPER" targetPackage="com.kangyi.mapper"  targetProject=".\src\main\java">
+            <!-- enableSubPackages:是否让schema作为包的后缀 -->
+            <property name="enableSubPackages" value="false" />
+        </javaClientGenerator>
+
+        <!-- 指定数据表 你想要生成那些表就添加几个-->
+        <!--<table schema="" tableName="product" domainObjectName="Product">-->
+            <!--&lt;!&ndash;true就可以保证 与数据库中的字段一致-->
+                <!--false就是驼峰命名法的格式&ndash;&gt;-->
+            <!--<property  name="useActualColumnNames"  value="true" />-->
+        <!--</table>-->
+
+
+                <!--<table tableName="t_user" domainObjectName="User" ></table>-->
+                <!--<table tableName="t_menu" domainObjectName="Menu" ></table>-->
+                <!--<table tableName="t_role" domainObjectName="Role" ></table>-->
+                <!--<table tableName="t_menu_role" domainObjectName="MenuRole" ></table>-->
+                <!--<table tableName="t_permission" domainObjectName="Permission" ></table>-->
+                <!--<table tableName="t_role_permission" domainObjectName="RolePermission" ></table>-->
+                <!--<table tableName="t_log" domainObjectName="Log" ></table>-->
+                <!--<table tableName="t_hesuan" domainObjectName="HeSuan" ></table>-->
+                <!--<table tableName="t_quartz_bean" domainObjectName="QuartzBean" ></table>-->
+                <table tableName="t_comment" domainObjectName="Comment" ></table>
+                <!--<table tableName="t_order_user_guanzhu" domainObjectName="Guanzhu" ></table>-->
+                <!--<table tableName="t_order_user_jiaru" domainObjectName="Jiaru" ></table>-->
+                <!--<table tableName="t_order123" domainObjectName="Order123" ></table>-->
+                <!--<table tableName="t_" domainObjectName="GeLi" ></table>-->
+    </context>
+</generatorConfiguration>

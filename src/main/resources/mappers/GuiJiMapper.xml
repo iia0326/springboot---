@@ -1,0 +1,405 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.kangyi.mapper.GuiJiMapper">
+  <resultMap id="BaseResultMap" type="com.kangyi.pojo.GuiJi">
+    <id column="guiji_id" jdbcType="BIGINT" property="guijiId" />
+    <result column="area" jdbcType="VARCHAR" property="area" />
+    <result column="starttime" jdbcType="TIMESTAMP" property="starttime" />
+    <result column="endtime" jdbcType="TIMESTAMP" property="endtime" />
+    <result column="enddate" jdbcType="TIMESTAMP" property="enddate" />
+    <result column="jindu" jdbcType="DECIMAL" property="jindu" />
+    <result column="weidu" jdbcType="DECIMAL" property="weidu" />
+    <result column="guiji_position" jdbcType="VARCHAR" property="guijiPosition" />
+    <result column="user_id" jdbcType="BIGINT" property="userId" />
+    <result column="order_id" jdbcType="BIGINT" property="orderId" />
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    guiji_id, area, starttime, endtime, enddate, jindu, weidu, guiji_position, user_id, 
+    order_id
+  </sql>
+
+  <select id="selectByOrderStatusAndExample" parameterType="com.kangyi.pojo.GuiJiExample" resultMap="BaseResultMap">
+    select guiji_id, area, starttime, endtime, enddate, jindu, weidu, guiji_position, g.user_id,
+    g.order_id
+    <if test="distinct">
+      distinct
+    </if>
+
+    from t_guiji g join t_order o on o.order_id = g.order_id and o.status=2
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+
+  <select id="selectByExample" parameterType="com.kangyi.pojo.GuiJiExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from t_guiji
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+
+
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from t_guiji
+    where guiji_id = #{guijiId,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from t_guiji
+    where guiji_id = #{guijiId,jdbcType=BIGINT}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.kangyi.pojo.GuiJiExample">
+    delete from t_guiji
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+
+
+  <insert id="genxinList" parameterType="java.util.List">
+
+    <selectKey resultType="java.lang.Long" order="AFTER" keyProperty="guijiId">
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+
+    replace into t_guiji (guiji_id, area, starttime,
+    endtime, enddate, weidu,
+    jindu, guiji_position, user_id,
+    order_id)
+    values
+    <foreach collection="list" item="i" index="index" separator="," >
+      (#{i.guijiId,jdbcType=BIGINT}, #{i.area,jdbcType=VARCHAR}, #{i.starttime,jdbcType=TIMESTAMP},
+      #{i.endtime,jdbcType=TIMESTAMP}, #{i.enddate,jdbcType=TIMESTAMP}, #{i.weidu,jdbcType=DECIMAL},
+      #{i.jindu,jdbcType=DECIMAL}, #{i.guijiPosition,jdbcType=VARCHAR}, #{i.userId,jdbcType=BIGINT},
+      #{i.orderId,jdbcType=BIGINT})
+    </foreach>
+
+  </insert>
+
+ <insert id="insertList" parameterType="java.util.List">
+    /*insert ignore
+    replace*/
+   <selectKey resultType="java.lang.Long" order="AFTER" keyProperty="guijiId">
+     SELECT LAST_INSERT_ID()
+   </selectKey>
+
+   replace into t_guiji (guiji_id, area, starttime,
+    endtime, enddate, weidu,
+    jindu, guiji_position, user_id,
+    order_id)
+    values
+    <foreach collection="list" item="i" index="index" separator="," >
+      (#{i.guijiId,jdbcType=BIGINT}, #{i.area,jdbcType=VARCHAR}, #{i.starttime,jdbcType=TIMESTAMP},
+      #{i.endtime,jdbcType=TIMESTAMP}, #{i.enddate,jdbcType=TIMESTAMP}, #{i.weidu,jdbcType=DECIMAL},
+      #{i.jindu,jdbcType=DECIMAL}, #{i.guijiPosition,jdbcType=VARCHAR}, #{i.userId,jdbcType=BIGINT},
+      #{i.orderId,jdbcType=BIGINT})
+    </foreach>
+
+  </insert>
+
+
+
+
+  <insert id="insert" parameterType="com.kangyi.pojo.GuiJi">
+
+    <selectKey resultType="java.lang.Long" order="AFTER" keyProperty="guijiId">
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+
+     insert ignore into t_guiji (guiji_id, area, starttime,
+      endtime, enddate, jindu, 
+      weidu, guiji_position, user_id, 
+      order_id)
+    values (#{guijiId,jdbcType=BIGINT}, #{area,jdbcType=VARCHAR}, #{starttime,jdbcType=TIMESTAMP}, 
+      #{endtime,jdbcType=TIMESTAMP}, #{enddate,jdbcType=TIMESTAMP}, #{jindu,jdbcType=DECIMAL}, 
+      #{weidu,jdbcType=DECIMAL}, #{guijiPosition,jdbcType=VARCHAR}, #{userId,jdbcType=BIGINT}, 
+      #{orderId,jdbcType=BIGINT})
+  </insert>
+  <insert id="insertSelective" parameterType="com.kangyi.pojo.GuiJi">
+    insert into t_guiji
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="guijiId != null">
+        guiji_id,
+      </if>
+      <if test="area != null">
+        area,
+      </if>
+      <if test="starttime != null">
+        starttime,
+      </if>
+      <if test="endtime != null">
+        endtime,
+      </if>
+      <if test="enddate != null">
+        enddate,
+      </if>
+      <if test="jindu != null">
+        jindu,
+      </if>
+      <if test="weidu != null">
+        weidu,
+      </if>
+      <if test="guijiPosition != null">
+        guiji_position,
+      </if>
+      <if test="userId != null">
+        user_id,
+      </if>
+      <if test="orderId != null">
+        order_id,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="guijiId != null">
+        #{guijiId,jdbcType=BIGINT},
+      </if>
+      <if test="area != null">
+        #{area,jdbcType=VARCHAR},
+      </if>
+      <if test="starttime != null">
+        #{starttime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="endtime != null">
+        #{endtime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="enddate != null">
+        #{enddate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="jindu != null">
+        #{jindu,jdbcType=DECIMAL},
+      </if>
+      <if test="weidu != null">
+        #{weidu,jdbcType=DECIMAL},
+      </if>
+      <if test="guijiPosition != null">
+        #{guijiPosition,jdbcType=VARCHAR},
+      </if>
+      <if test="userId != null">
+        #{userId,jdbcType=BIGINT},
+      </if>
+      <if test="orderId != null">
+        #{orderId,jdbcType=BIGINT},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.kangyi.pojo.GuiJiExample" resultType="java.lang.Long">
+    select count(*) from t_guiji
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map">
+    update t_guiji
+    <set>
+      <if test="record.guijiId != null">
+        guiji_id = #{record.guijiId,jdbcType=BIGINT},
+      </if>
+      <if test="record.area != null">
+        area = #{record.area,jdbcType=VARCHAR},
+      </if>
+      <if test="record.starttime != null">
+        starttime = #{record.starttime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.endtime != null">
+        endtime = #{record.endtime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.enddate != null">
+        enddate = #{record.enddate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.jindu != null">
+        jindu = #{record.jindu,jdbcType=DECIMAL},
+      </if>
+      <if test="record.weidu != null">
+        weidu = #{record.weidu,jdbcType=DECIMAL},
+      </if>
+      <if test="record.guijiPosition != null">
+        guiji_position = #{record.guijiPosition,jdbcType=VARCHAR},
+      </if>
+      <if test="record.userId != null">
+        user_id = #{record.userId,jdbcType=BIGINT},
+      </if>
+      <if test="record.orderId != null">
+        order_id = #{record.orderId,jdbcType=BIGINT},
+      </if>
+    </set>
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map">
+    update t_guiji
+    set guiji_id = #{record.guijiId,jdbcType=BIGINT},
+      area = #{record.area,jdbcType=VARCHAR},
+      starttime = #{record.starttime,jdbcType=TIMESTAMP},
+      endtime = #{record.endtime,jdbcType=TIMESTAMP},
+      enddate = #{record.enddate,jdbcType=TIMESTAMP},
+      jindu = #{record.jindu,jdbcType=DECIMAL},
+      weidu = #{record.weidu,jdbcType=DECIMAL},
+      guiji_position = #{record.guijiPosition,jdbcType=VARCHAR},
+      user_id = #{record.userId,jdbcType=BIGINT},
+      order_id = #{record.orderId,jdbcType=BIGINT}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.kangyi.pojo.GuiJi">
+    update t_guiji
+    <set>
+      <if test="area != null">
+        area = #{area,jdbcType=VARCHAR},
+      </if>
+      <if test="starttime != null">
+        starttime = #{starttime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="endtime != null">
+        endtime = #{endtime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="enddate != null">
+        enddate = #{enddate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="jindu != null">
+        jindu = #{jindu,jdbcType=DECIMAL},
+      </if>
+      <if test="weidu != null">
+        weidu = #{weidu,jdbcType=DECIMAL},
+      </if>
+      <if test="guijiPosition != null">
+        guiji_position = #{guijiPosition,jdbcType=VARCHAR},
+      </if>
+      <if test="userId != null">
+        user_id = #{userId,jdbcType=BIGINT},
+      </if>
+      <if test="orderId != null">
+        order_id = #{orderId,jdbcType=BIGINT},
+      </if>
+    </set>
+    where guiji_id = #{guijiId,jdbcType=BIGINT}
+  </update>
+
+  <update id="updateListByPrimaryKeySelective" parameterType="java.util.List">
+    <foreach collection="list" item="i" index="index" separator=";">
+      update t_guiji
+      <set>
+        <if test="i.area != null">
+          area = #{i.area,jdbcType=VARCHAR},
+        </if>
+        <if test="i.starttime != null">
+          starttime = #{i.starttime,jdbcType=TIMESTAMP},
+        </if>
+        <if test="i.endtime != null">
+          endtime = #{i.endtime,jdbcType=TIMESTAMP},
+        </if>
+        <if test="i.enddate != null">
+          enddate = #{i.enddate,jdbcType=TIMESTAMP},
+        </if>
+        <if test="i.jindu != null">
+          jindu = #{i.jindu,jdbcType=DECIMAL},
+        </if>
+        <if test="i.weidu != null">
+          weidu = #{i.weidu,jdbcType=DECIMAL},
+        </if>
+        <if test="i.guijiPosition != null">
+          guiji_position = #{i.guijiPosition,jdbcType=VARCHAR},
+        </if>
+        <if test="i.userId != null">
+          user_id = #{i.userId,jdbcType=BIGINT},
+        </if>
+        <if test="i.orderId != null">
+          order_id = #{i.orderId,jdbcType=BIGINT},
+        </if>
+      </set>
+      where guiji_id = #{i.guijiId,jdbcType=BIGINT}
+    </foreach>
+  </update>
+
+  <!--<foreach collection="list" item="i" index="index" separator="," >-->
+    <!--(#{i.guijiId,jdbcType=BIGINT}, #{i.area,jdbcType=VARCHAR}, #{i.starttime,jdbcType=TIMESTAMP},-->
+    <!--#{i.endtime,jdbcType=TIMESTAMP}, #{i.enddate,jdbcType=TIMESTAMP}, #{i.weidu,jdbcType=DECIMAL},-->
+    <!--#{i.jindu,jdbcType=DECIMAL}, #{i.guijiPosition,jdbcType=VARCHAR}, #{i.userId,jdbcType=BIGINT},-->
+    <!--#{i.orderId,jdbcType=BIGINT})-->
+  <!--</foreach>-->
+
+  <update id="updateByPrimaryKey" parameterType="com.kangyi.pojo.GuiJi">
+    update t_guiji
+    set area = #{area,jdbcType=VARCHAR},
+      starttime = #{starttime,jdbcType=TIMESTAMP},
+      endtime = #{endtime,jdbcType=TIMESTAMP},
+      enddate = #{enddate,jdbcType=TIMESTAMP},
+      jindu = #{jindu,jdbcType=DECIMAL},
+      weidu = #{weidu,jdbcType=DECIMAL},
+      guiji_position = #{guijiPosition,jdbcType=VARCHAR},
+      user_id = #{userId,jdbcType=BIGINT},
+      order_id = #{orderId,jdbcType=BIGINT}
+    where guiji_id = #{guijiId,jdbcType=BIGINT}
+  </update>
+</mapper>
