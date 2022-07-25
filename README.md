@@ -38,9 +38,9 @@ SpringBoot+ MyBatis+Shiro+Redis+Async+Quartz+Jsuop+React+Layui
 
 
 
-前端react部分地址：
+前端react部分地址：https://github.com/liyongchun01/ep-webapp/tree/master/ep-webapp
 
-后端SpringCloud升级版地址：
+后端SpringCloud升级版地址：https://gitee.com/iia_ljh/springcloud
 
 
 
